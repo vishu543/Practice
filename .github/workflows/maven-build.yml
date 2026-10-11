@@ -6,6 +6,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+env:
+  APP_NAME: ci-cd-demo
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -30,3 +33,20 @@ jobs:
           name: ci-cd-demo-jar
           path: target/*.jar
           if-no-files-found: error
+
+  verify-artifact:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download JAR artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ci-cd-demo-jar
+          path: downloaded-artifact
+
+      - name: Verify downloaded JAR
+        run: |
+          echo "Application: $APP_NAME"
+          ls -lh downloaded-artifact/
+          test -n "$(find downloaded-artifact -maxdepth 1 -name '*.jar' -print -quit)"
