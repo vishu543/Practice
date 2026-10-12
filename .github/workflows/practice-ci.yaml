@@ -1,0 +1,16 @@
+name: newPracticeFile
+
+on:
+  push:
+     branches: [main]
+  workflow_dispatch:
+
+env:
+  APP_NAME: practiceFile
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: practicepackage
+        run:  echo "Welcome CICD"
