@@ -7,6 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class AppTest {
     @Test
     void messageShouldBeCorrect() {
-        assertEquals("Hello", App.message());
+        assertEquals("Hello, CI/CD", App.message());
     }
-}
+i}
