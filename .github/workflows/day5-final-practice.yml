@@ -1,4 +1,5 @@
-name: newPracticeFile
+
+name: Day 5 Final Practice
 
 on:
   push:
@@ -11,35 +12,52 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    outputs:
+      app_version: ${{ steps.version.outputs.app_version }}
+
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
 
-      - name: practicepackage
+      - name: Create practice file
         run: |
-          echo "Welcome CICD" >> practice-output.txt
-          echo "File content updated successfully:"
+          echo "Welcome CICD" > practice-output.txt
+          echo "File content created successfully:"
           cat practice-output.txt
+
+      - name: Set application version
+        id: version
+        run: echo "app_version=1.0.0" >> "$GITHUB_OUTPUT"
+
       - name: Upload practice artifact
         uses: actions/upload-artifact@v4
         with:
           name: practice-file
           path: practice-output.txt
+
+  verify:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Download practice artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: practice-file
+          path: downloaded-files
+
       - name: Verify downloaded file
         run: cat downloaded-files/practice-output.txt
 
       - name: Display application version
         run: echo "Application version is ${{ needs.build.outputs.app_version }}"
 
-  verify:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - run: echo "Skeleton for verify job"
-
   notify-failure:
     runs-on: ubuntu-latest
     needs: build
     if: ${{ always() && needs.build.result == 'failure' }}
+
     steps:
-      - run: echo "Skeleton for notify-failure job"
+      - name: Show failure notification
+        run: echo "The build job failed!"
