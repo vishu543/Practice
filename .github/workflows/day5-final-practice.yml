@@ -1,0 +1,35 @@
+name: newPracticeFile
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  APP_NAME: practiceFile
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: practicepackage
+        run: |
+          echo "Welcome CICD" >> practice-output.txt
+          echo "File content updated successfully:"
+          cat practice-output.txt
+
+  verify:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - run: echo "Skeleton for verify job"
+
+  notify-failure:
+    runs-on: ubuntu-latest
+    needs: build
+    if: ${{ always() && needs.build.result == 'failure' }}
+    steps:
+      - run: echo "Skeleton for notify-failure job"
