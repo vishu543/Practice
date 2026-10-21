@@ -22,11 +22,14 @@ jobs:
           cat practice-output.txt
       - name: Upload practice artifact
         uses: actions/upload-artifact@v4
-      - name: Verify downloaded file
-        run: cat downloaded-files/practice-output.txt
         with:
           name: practice-file
           path: practice-output.txt
+      - name: Verify downloaded file
+        run: cat downloaded-files/practice-output.txt
+
+      - name: Display application version
+        run: echo "Application version is ${{ needs.build.outputs.app_version }}"
 
   verify:
     runs-on: ubuntu-latest
