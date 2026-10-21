@@ -20,6 +20,11 @@ jobs:
           echo "Welcome CICD" >> practice-output.txt
           echo "File content updated successfully:"
           cat practice-output.txt
+      - name: Upload practice artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: practice-file
+          path: practice-output.txt
 
   verify:
     runs-on: ubuntu-latest
